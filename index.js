@@ -5,7 +5,12 @@ const express = require("express");
 const mongoose = require("mongoose");
 
 // database
-const database = require("./database");
+const database = require("./database/index");
+
+// Models
+const BookModel = require("./database/books");
+const AuthorModel = require("./database/author");
+const PublicationModel = require("./database/publications");
 
 // initializaton
 const booky = express();
