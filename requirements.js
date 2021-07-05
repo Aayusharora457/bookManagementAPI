@@ -26,12 +26,12 @@
 // Add new book     ✔  📌
 
 // PUT
-// Update book title        ✔
-// Update/add new author for a book------------------------------> smjhna h abhiiiiiiii dobara se
+// Update book title        ✔  📌
+// Update/add new author for a book  ✔ 📌
 
 // DELETE
-// Delete a book
-// Delete an author from a book
+// Delete a book                      ✔  📌
+// Delete an author from a book        ✔ 📌
 // ----------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -47,10 +47,10 @@
 // Add new author       ✔  📌
 
 // PUT
-// Update author name   ✔
+// Update author name   ✔      📌
 
 // DELETE
-// Delete an author
+// Delete an author        ✔  📌
 // -----------------------------------------------------------------------------------------------------------------------------------
 
 // Publications
@@ -65,12 +65,12 @@
 // Add new publications     ✔      📌
 
 // PUT
-// Update the publication name    ✔  
-// update/add new book to publication------------------------------> smjhna h abhiiiiiiii dobara se
+// Update the publication name    ✔  📌
+// update/add new book to publication   ✔ 📌
 
 // DELETE
-// Delete the publication
-// delete the book from publication
+// Delete the publication       ✔ 📌
+// delete the book from publication     📌
 // ---------------------------------------------------------------------------------------------------------------------------------------
 
 // How does the server serves the request
