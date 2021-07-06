@@ -14,8 +14,13 @@ Parameter       none
 Methods         get
 */
 Router.get("/", async (req, res) => {
-    const getAllBooks = await BookModel.find();
+    try {
+        const getAllBooks = await BookModel.find();
     return res.json(getAllBooks);
+    } catch (error) {
+       return res.json({error: error.message}); 
+    }
+    
 });
 
 /*
@@ -26,7 +31,8 @@ Parameter       isbn
 Methods         get
 */
 Router.get("/is/:isbn", async (req, res) => {
-    const getSpecificBook = await BookModel.findOne({ISBN:req.params.isbn});
+    try {
+        const getSpecificBook = await BookModel.findOne({ISBN:req.params.isbn});
     
     // const getSpecificBook = database.books.filter((book) => book.ISBN === req.params.isbn);
 
@@ -36,6 +42,10 @@ Router.get("/is/:isbn", async (req, res) => {
     }else{
         return res.json({book: getSpecificBook});
     }
+    } catch (error) {
+        return res.json({error: error.message}); 
+    }
+    
 });
 
 /*
@@ -46,7 +56,8 @@ Parameter       category
 Methods         get
 */
 Router.get("/c/:category", async (req, res) => {
-    const getSpecificBook = await BookModel.findOne({category: req.params.category });
+    try {
+        const getSpecificBook = await BookModel.findOne({category: req.params.category });
     
     // const getSpecificBook = database.books.filter((book) => book.category.includes(req.params.category));
     
@@ -55,6 +66,10 @@ Router.get("/c/:category", async (req, res) => {
     }else{
         return res.json({book: getSpecificBook});
     }
+    } catch (error) {
+        return res.json({error: error.message}); 
+    }
+    
 });
 
 /*
@@ -65,14 +80,19 @@ Parameter       Lang
 Methods         get
 */
 Router.get("/language/:Lang", async (req, res) => {
-    const getLanguage = await BookModel.findOne({language: req.params.Lang});
+    try {
+        const getLanguage = await BookModel.findOne({language: req.params.Lang});
     
-    // const getLanguage = database.books.filter((book) => book.language === req.params.Lang);
-
-    if(!getLanguage){
-        return res.json({error:`No book found with the language of ${req.params.Lang}`});
-    }else{
-        return res.json({book: getLanguage});
+        // const getLanguage = database.books.filter((book) => book.language === req.params.Lang);
+    
+        if(!getLanguage){
+            return res.json({error:`No book found with the language of ${req.params.Lang}`});
+        }else{
+            return res.json({book: getLanguage});
+        }
+         
+    } catch (error) {
+        return res.json({error: error.message});
     }
     
 });
@@ -85,11 +105,16 @@ Parameter       none
 Methods         post
 */
 Router.post("/add", async (req, res) => {
-    const { newBook } = req.body;
+    try{
+        const { newBook } = req.body;
 
-    BookModel.create(newBook);
+    await BookModel.create(newBook);
     // database.books.push(newBook);
     return res.json({message: "book was added"});
+    }catch(error){
+        return res.json({error: error.message});
+    }
+    
 });
 
 /*
@@ -100,21 +125,26 @@ Parameter       isbn
 Methods         put
 */
 Router.put("/update/title/:isbn", async (req, res) => {
-    const updatedBook = await BookModel.findOneAndUpdate({ISBN: req.params.isbn}, 
-        {
-            title: req.body.newBookTitle
-        }, 
-        {
-            new: true
-        }
-        );
+    try {
+        const updatedBook = await BookModel.findOneAndUpdate({ISBN: req.params.isbn}, 
+            {
+                title: req.body.newBookTitle
+            }, 
+            {
+                new: true
+            }
+            );
+        
+        // database.books.forEach((book) => {
+        //     if(book.ISBN === req.params.isbn){
+        //         return book.title = req.body.newBookTitle;
+        //     }
+        // });
+        return res.json({books: updatedBook});
+    } catch (error) {
+        return res.json({error: error.message}); 
+    }
     
-    // database.books.forEach((book) => {
-    //     if(book.ISBN === req.params.isbn){
-    //         return book.title = req.body.newBookTitle;
-    //     }
-    // });
-    return res.json({books: updatedBook});
 });
 
 /*
@@ -125,7 +155,8 @@ Parameter       isbn, authorId
 Methods         put
 */
 Router.put("/update/author/:isbn/:authorId", async (req, res) => {
-    // update book database
+    try {
+        // update book database
     const updatedBook = await BookModel.findOneAndUpdate({ISBN: req.params.isbn}, 
         {
             $addToSet : {
@@ -160,6 +191,10 @@ Router.put("/update/author/:isbn/:authorId", async (req, res) => {
     //     }
     // });
     return res.json({books: updatedBook, authors: updatedAuthor});
+    } catch (error) {
+        return res.json({error: error.message});
+    }
+    
 });
 
 /*
@@ -170,12 +205,17 @@ Parameter       isbn
 Methods         delete
 */
 Router.delete("/delete/:isbn", async (req, res) => {
-    const updatedBookDatabase = await BookModel.findOneAndDelete({ISBN:req.params.isbn});
+    try {
+        const updatedBookDatabase = await BookModel.findOneAndDelete({ISBN:req.params.isbn});
     
      // const updatedBookDatabase = database.books.filter((book) => database.books.ISBN !== req.params.isbn);
  
      // database.books = updatedBookDatabase;
      return res.json({books: updatedBookDatabase});
+    } catch (error) {
+        return res.json({error: error.message});
+    }
+    
  });
 
  /*
@@ -186,7 +226,8 @@ Parameter       isbn, authorId
 Methods         delete
 */
 Router.delete("/delete/author/:isbn/:authorId", async (req, res) => {
-    // update the books database
+    try {
+        // update the books database
   const updatedBook = await BookModel.findOneAndUpdate({ISBN: req.params.isbn}, 
     {
         $pull : {
@@ -221,6 +262,10 @@ Router.delete("/delete/author/:isbn/:authorId", async (req, res) => {
     //     }
     // });
     return res.json({books:updatedBook, authors: updatedAuthor});
+    } catch (error) {
+        return res.json({error: error.message});
+    }
+    
 });
 
 module.exports = Router;
